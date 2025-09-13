@@ -51,13 +51,13 @@ jobs:
 
       - name: Validate version
         id: validate
-        uses: airygen/action-wordpress-plugin-release-check@v1
+        uses: airygen/actions/validate-plugin-version@v1
         with:
           plugin_file: myplugin.php
 
       - name: Stage & Zip
         id: pack
-        uses: airygen/actions/stage-and-zip-wp-plugin@v1
+        uses: airygen/actions/stage-zip-file@v1
         with:
           plugin_file: myplugin.php
           wp_slug: myplugin
