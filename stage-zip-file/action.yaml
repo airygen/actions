@@ -33,7 +33,6 @@ inputs:
         LICENSE
         composer.json
 
-  readme_case_insensitive:
   release_dir:
     required: false
     default: ".release"
@@ -47,6 +46,9 @@ outputs:
   zip_path:
     description: Full path to the generated zip
     value: ${{ steps.mkzip.outputs.zip_path }}
+  release_dir:
+    description: Path to the staging directory
+    value: ${{ inputs.release_dir }}
 
 runs:
   using: "composite"

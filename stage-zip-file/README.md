@@ -36,6 +36,7 @@ This action is designed to standardize the packaging process across multiple Wor
 | Name | Description |
 | --- | --- |
 | `zip_path` | Full path to the generated plugin zip file. |
+| `release_dir` | Path to the temporary staging directory used for packaging. |
 
 ---
 
