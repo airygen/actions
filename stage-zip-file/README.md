@@ -60,8 +60,8 @@ jobs:
         uses: airygen/actions/stage-zip-file@v1
         with:
           plugin_file: myplugin.php
-          wp_slug: myplugin
-          tag: ${{ steps.validate.outputs.tag }}
+          plugin_slug: myplugin
+          plugin_version: ${{ steps.validate.outputs.tag }}
           stage_dirs: |
             languages
             inc
