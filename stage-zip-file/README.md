@@ -26,7 +26,6 @@ This action is designed to standardize the packaging process across multiple Wor
 | `plugin_slug` | ✅ | — | Plugin slug used for naming the zip file. |
 | `stage_dirs` | ❌ | *(empty)* | Multiline list of directories to stage if they exist. |
 | `extra_files` | ❌ | *(empty)* | Multiline list of extra files to stage if they exist. |
-| `readme_case_insensitive` | ❌ | `true` | Whether to detect `README.txt` in a case-insensitive way. |
 | `release_dir` | ❌ | `.release` | Temporary staging directory. |
 | `zip_outdir` | ❌ | `.` | Directory where the zip file will be created. |
 

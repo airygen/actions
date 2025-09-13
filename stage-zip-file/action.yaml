@@ -12,7 +12,6 @@ inputs:
     required: true
     description: Plugin slug for zip naming (e.g., airyseo)
 
-  # Multiline "arrays"
   stage_dirs:
     required: false
     default: ""
@@ -35,9 +34,6 @@ inputs:
         composer.json
 
   readme_case_insensitive:
-    required: false
-    default: "true"
-    description: Whether to detect README.txt case-insensitively (true/false)
   release_dir:
     required: false
     default: ".release"
@@ -63,14 +59,12 @@ runs:
         RELEASE_DIR="${{ inputs.release_dir }}"
         PLUGIN_FILE="${{ inputs.plugin_file }}"
 
-        # Parse multiline "arrays" into bash arrays
         readarray -t STAGE_DIRS <<< "${{ inputs.stage_dirs }}"
         readarray -t EXTRA_FILES <<< "${{ inputs.extra_files }}"
 
         rm -rf "$RELEASE_DIR"
         mkdir -p "$RELEASE_DIR"
 
-        # 1) Directories (optional, preserve structure)
         for d in "${STAGE_DIRS[@]}"; do
           [[ -z "${d// }" ]] && continue
           if [ -d "$d" ]; then
@@ -79,25 +73,17 @@ runs:
           fi
         done
 
-        # 2) Main plugin file (required)
         if [ ! -f "$PLUGIN_FILE" ]; then
           echo "Plugin main file not found: $PLUGIN_FILE"
           exit 1
         fi
         cp -v "$PLUGIN_FILE" "$RELEASE_DIR/"
 
-        # 3) README.txt (case-insensitive optional)
-        if [ "${{ inputs.readme_case_insensitive }}" = "true" ]; then
-          README_FILE=$(ls -1 | grep -i -x 'readme.txt' | head -n1 || true)
-          if [ -n "$README_FILE" ]; then
-            # Normalize to README.txt in the payload
-            cp -v "$README_FILE" "$RELEASE_DIR/README.txt"
-          fi
-        else
-          [ -f README.txt ] && cp -v README.txt "$RELEASE_DIR/" || true
+        README_FILE=$(ls -1 | grep -i -x 'readme.txt' | head -n1 || true)
+        if [ -n "$README_FILE" ]; then
+          cp -v "$README_FILE" "$RELEASE_DIR/$README_FILE"
         fi
 
-        # 4) Extra files (optional)
         for f in "${EXTRA_FILES[@]}"; do
           [[ -z "${f// }" ]] && continue
           [ -f "$f" ] && cp -v "$f" "$RELEASE_DIR/" || true
@@ -119,7 +105,6 @@ runs:
         mkdir -p "$OUTDIR"
         (cd "$RELEASE_DIR" && zip -r "../$ZIP_NAME" .)
 
-        # Resolve absolute path if possible; fall back to OUTDIR/ZIP_NAME
         if command -v realpath >/dev/null 2>&1; then
           ZIP_PATH="$(cd "$OUTDIR" && realpath "$ZIP_NAME")"
         else
